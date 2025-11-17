@@ -4,7 +4,7 @@
   "description": "",
   "main": "./src/index.ts",
   "scripts": {
-    "prebuild": "npm install && npx prisma generate",
+    "prebuild": "npm install && npx prisma generate --no-engine",
     "build": "rm -rf dist && tsc && cp -r generated dist/",
     "start": "node dist/src/index.js"
   },
