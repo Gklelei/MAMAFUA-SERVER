@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String?  @unique
+  password  String?
+  role      Role     @default(ADMIN)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  services     Service[]
+  availability AvailabilitySlot[]
+  requests     BookingRequest[]
+}
+
+model Service {
+  id             String           @id @default(cuid())
+  ownerId        String
+  owner          User             @relation(fields: [ownerId], references: [id])
+  title          String
+  description    String?
+  durationMin    Int              @default(60)
+  priceCents     Int?
+  active         Boolean          @default(true)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  BookingRequest BookingRequest[]
+}
+
+model AvailabilitySlot {
+  id        String   @id @default(cuid())
+  ownerId   String
+  owner     User     @relation(fields: [ownerId], references: [id])
+  startTime String
+  endTime   String
+  date      DateTime
+}
+
+model BookingRequest {
+  id              String        @id @default(cuid())
+  ownerId         String
+  owner           User          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  serviceId       String
+  service         Service       @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  customerName    String
+  customerPhone   String
+  customerAddress String
+  requestedAt     DateTime      @default(now())
+  status          RequestStatus @default(PENDING)
+  note            String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+enum RequestStatus {
+  PENDING
+  CONTACTED
+  SCHEDULED
+  CANCELLED
+  COMPLETED
+}

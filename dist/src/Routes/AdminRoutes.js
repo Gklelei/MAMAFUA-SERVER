@@ -1,0 +1,22 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const Auth_1 = require("../Middlewares/Auth");
+const AdminCreateTimeSchedule_1 = __importDefault(require("../Controllers/AdminCreateTimeSchedule"));
+const AdminCreateService_1 = __importDefault(require("../Controllers/AdminCreateService"));
+const BookingRequests_1 = __importDefault(require("../Controllers/BookingRequests"));
+const router = express_1.default.Router();
+router.post("/create/time-slot", Auth_1.VerifyToken, AdminCreateTimeSchedule_1.default.AdminCreateTimeSchedule);
+router.put("/update/time-slot/:id", Auth_1.VerifyToken, AdminCreateTimeSchedule_1.default.AdminEditAvailabilitySlot);
+router.post("/create/service-listing", Auth_1.VerifyToken, AdminCreateService_1.default.AdminCreateServiceListing);
+router.delete("/delete-listing/:id", Auth_1.VerifyToken, AdminCreateService_1.default.AdminDeleteServiceListing);
+router.put("/update-listing/:id", Auth_1.VerifyToken, AdminCreateService_1.default.AdminUpdateServiceListing);
+router.get("/listings/all", Auth_1.VerifyToken, AdminCreateService_1.default.AdminViewAllServiceListings);
+router.get("/all-requests", Auth_1.VerifyToken, BookingRequests_1.default.AdminViewRequests);
+exports.default = router;
+router.put("/add-note/:id", Auth_1.VerifyToken, BookingRequests_1.default.AdminAddOrEditNote);
+router.delete("/delete-service/:id", Auth_1.VerifyToken, BookingRequests_1.default.AdminDeleteServiceRequest);
+router.put("/change-status/:id", Auth_1.VerifyToken, BookingRequests_1.default.AdminChangeBookingRequestStatus);
