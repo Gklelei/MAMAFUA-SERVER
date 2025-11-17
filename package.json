@@ -6,7 +6,7 @@
   "scripts": {
     "prebuild": "npm install && npx prisma generate",
     "build": "rm -rf dist && tsc && cp -r generated dist/",
-    "start": "node dist/index.js"
+    "start": "node dist/src/index.js"
   },
   "keywords": [],
   "author": "",
