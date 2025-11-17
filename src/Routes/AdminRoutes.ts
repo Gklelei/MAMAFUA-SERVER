@@ -36,11 +36,7 @@ router.put(
   AdminCreateService.AdminUpdateServiceListing
 );
 
-router.get(
-  "/listings/all",
-  VerifyToken,
-  AdminCreateService.AdminViewAllServiceListings
-);
+router.get("/listings/all", AdminCreateService.AdminViewAllServiceListings);
 
 router.get("/all-requests", VerifyToken, BookingRequests.AdminViewRequests);
 export default router;
